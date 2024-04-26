@@ -1,5 +1,6 @@
 import Employee from "../models/employee.model.js";
-const registerEmployee = async (req, res) => {
+import expressAsyncHandler from "express-async-handler";
+const registerEmployee = expressAsyncHandler(async (req, res) => {
   const { name, email, id, role, address } = req.body;
   if (!name || !email || !id || !role || !address) {
     res.status(400).json({ message: "all the fields are required" });
@@ -20,9 +21,9 @@ const registerEmployee = async (req, res) => {
       }
     }
   }
-};
+});
 
-const getAllEmployees = async (req, res) => {
+const getAllEmployees = expressAsyncHandler(async (req, res) => {
   const foundEmps = await Employee.find().select(
     "name email id role address -_id"
   );
@@ -31,6 +32,6 @@ const getAllEmployees = async (req, res) => {
   } else {
     res.status(200).json(foundEmps);
   }
-};
+});
 
 export { getAllEmployees, registerEmployee };
