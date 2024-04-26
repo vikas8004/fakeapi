@@ -2,11 +2,11 @@ import Employee from "../models/employee.model.js";
 const registerEmployee = async (req, res) => {
   const { name, email, id, role, address } = req.body;
   if (!name || !email || !id || !role || !address) {
-    throw new Error("all the fields are required");
+    res.status(400).json({ message: "all the fields are required" });
   } else {
     const foundEmp = await Employee.findOne({ email, id });
     if (foundEmp) {
-      throw new Error("employee already exist");
+      res.status(400).send({ message: "user already exist" });
     } else {
       const registeredEmp = await Employee.create({
         name,
@@ -27,7 +27,7 @@ const getAllEmployees = async (req, res) => {
     "name email id role address -_id"
   );
   if (!foundEmps) {
-    throw new Error("something went wrong");
+    res.status(404).json({ message: "No employees found" });
   } else {
     res.status(200).json(foundEmps);
   }
