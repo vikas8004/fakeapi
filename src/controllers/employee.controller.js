@@ -24,14 +24,19 @@ const registerEmployee = expressAsyncHandler(async (req, res) => {
 });
 
 const getAllEmployees = expressAsyncHandler(async (req, res) => {
-  const foundEmps = await Employee.find().select(
-    "name email id role address -_id"
-  );
-  if (!foundEmps) {
-    res.status(404).json({ message: "No employees found" });
-  } else {
-    res.status(200).json(foundEmps);
+  try {
+    const foundEmps = await Employee.find().select(
+      "name email id role address -_id"
+    );
+    if (!foundEmps) {
+      res.status(404).json({ message: "No employees found" });
+    } else {
+      res.status(200).json(foundEmps);
+    }
+  } catch (error) {
+    res.send(error.message);
   }
+  
 });
 
 export { getAllEmployees, registerEmployee };
